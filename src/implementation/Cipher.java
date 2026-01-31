@@ -1,8 +1,8 @@
-// text - входной текст
-// shift - величина сдвига
-// c - текущий символ текста
+package implementation;
 
-public class Cipher {
+import interfaces.CipherAlgorithm;
+
+public class Cipher implements CipherAlgorithm {
 
     static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz" +
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
@@ -10,24 +10,25 @@ public class Cipher {
             " " +
             ".,!?\"'";
 
-    public static String encrypt(String text, int shift) {
+    @Override
+    public String encrypt(String text, int shift) {
         StringBuilder result = new StringBuilder();
 
         for (char c : text.toCharArray()) {
             int index = ALPHABET.indexOf(c);
 
-            if (index == -1) {              // Есть ли этот символ в алфавите?
-                result.append(c);           // Символ не из алфавита
+            if (index == -1) {
+                result.append(c);
             } else {
-                int newIndex = (index + shift) % ALPHABET.length();     // без % будет ошибка
+                int newIndex = (index + shift) % ALPHABET.length();
                 result.append(ALPHABET.charAt(newIndex));
             }
 
         }
         return result.toString();
     }
-
-    public static String decrypt(String text, int shift) {
+    @Override
+    public String decrypt(String text, int shift) {
 
         StringBuilder result = new StringBuilder();
 
@@ -37,7 +38,7 @@ public class Cipher {
             if (index == -1) {
                 result.append(c);
             } else {
-                int newIndex = (index - shift + ALPHABET.length()) % ALPHABET.length();     // Сначала гарантировать положительное число, потом зациклить
+                int newIndex = (index - shift + ALPHABET.length()) % ALPHABET.length();
                 result.append(ALPHABET.charAt(newIndex));
             }
         }
